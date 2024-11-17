@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>labFour</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-17">
+<meta name="DC.source" content="labFour.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<pre class="codeinput">
+<span class="comment">% Create two smoothing kernals, the first one should be of</span>
+<span class="comment">% dimensions 3x3, the second: 7x7.</span>
+<span class="comment">% filterOne is shown below, you will need to complete</span>
+<span class="comment">% step 1b (the 7x7 filter).</span>
+
+<span class="comment">%In order to create a smoothing effect we must ensure</span>
+<span class="comment">%the image keeps its original brightness and quality,</span>
+<span class="comment">%by keeping the matrix value at 1 while also lowering</span>
+<span class="comment">%the smoothness of each pixel by dividing it. In the</span>
+<span class="comment">%3x3 matrix the value to divide by is 9 since the</span>
+<span class="comment">%image is divided into 9 sections.</span>
+<span class="comment">% a.</span>
+smoothingFilterOne = [1/9 1/9 1/9;
+                      1/9 1/9 1/9;
+                      1/9 1/9 1/9];
+
+<span class="comment">%For the second smoothing filter, we keep the same logic</span>
+<span class="comment">%except each pixel is divided by 49 since the image is</span>
+<span class="comment">%divided into 49 sections.</span>
+<span class="comment">% b.</span>
+smoothingFilterTwo = [1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49;
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49;
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49;
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49;
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49;
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49;
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49];
+
+<span class="comment">% Apply both smoothing filters to the cameraman image.</span>
+<span class="comment">% The cameraman image comes with matlab and can be</span>
+<span class="comment">% accessed as shown below:</span>
+<span class="comment">% a.</span>
+<span class="comment">%Read the image into the application</span>
+myImage = imread(<span class="string">'cameraman.tif'</span>);
+
+<span class="comment">%Create another image with the filter applied.</span>
+<span class="comment">%Using the imfilter command easily allows us to do this</span>
+<span class="comment">%because it applies whatever filter we supply it to the</span>
+<span class="comment">%original image referenced</span>
+filterOneImage = imfilter(myImage, smoothingFilterOne);
+
+<span class="comment">%Using the same logic and command to apply the second</span>
+<span class="comment">%filter to the original image</span>
+filterTwoImage = imfilter(myImage, smoothingFilterTwo);
+
+<span class="comment">% Your output should include a single figure containing</span>
+<span class="comment">% the original image followed by each of the above</span>
+<span class="comment">% filtered images.</span>
+
+<span class="comment">%Creating the Output Figure</span>
+<span class="comment">%Naming the figure</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Filters Assignment'</span>);
+
+<span class="comment">%Plotting the Original Image, subplot is used to choose where the image</span>
+<span class="comment">%is plotted in the figure, imshow is used to display an image, and title is</span>
+<span class="comment">%used to create a title above an image, so these will be seen a lot</span>
+<span class="comment">%throughout the rest of the code</span>
+subplot(2,2,1);
+imshow(myImage);
+title(<span class="string">'Original Image'</span>);
+
+<span class="comment">%Plotting the First Smoothing Filter Image (3x3)</span>
+subplot(2,2,3);
+imshow(filterOneImage);
+title(<span class="string">"3x3 Smoothing Filter"</span>);
+
+<span class="comment">%Plotting the Second Smoothing Filter Image (7x7)</span>
+subplot(2,2,4);
+imshow(filterTwoImage);
+title(<span class="string">'7x7 Smoothing Filter'</span>);
+
+<span class="comment">% At the end of your script, output the answers to the</span>
+<span class="comment">% following questions (use the fprintf command):</span>
+<span class="comment">% a. What 3x3 filter could be used to produce the exact</span>
+<span class="comment">% same image after convolution?</span>
+<span class="comment">% b. What 3x3 filter could be used to shift all pixels</span>
+<span class="comment">% to the left?</span>
+
+<span class="comment">%Outputting the answer to questions a &amp; b</span>
+A = [<span class="string">'A. The 3x3 filter that could be used to produce the exact same image '</span> <span class="keyword">...</span>
+    <span class="string">'after convolution would be:'</span>];
+A1 = [0 0 0;
+      0 1 0;
+      0 0 0];
+A2 = [<span class="string">'This 3x3 matrix functions in this way because it is known as an '</span> <span class="keyword">...</span>
+    <span class="string">'identity matrix. The central pixel of one multiplies each pixel by '</span> <span class="keyword">...</span>
+    <span class="string">'itself and the surrounding zeros ensure there are no other changes '</span> <span class="keyword">...</span>
+    <span class="string">'applied to the image&rsquo;s pixels.'</span>];
+B = [<span class="string">'B. The 3x3 filter that could be used to shift all pixels to the left '</span> <span class="keyword">...</span>
+    <span class="string">'after convolution would be:'</span>];
+B1 = [0 0 0;
+      0 0 1;
+      0 0 0];
+B2 = [<span class="string">'This 3x3 matrix functions in this way because having an offcenter '</span> <span class="keyword">...</span>
+    <span class="string">'one leads each pixel being replaced by the pixel to its right, which'</span> <span class="keyword">...</span>
+    <span class="string">' moves all the pixels in the image to the left'</span>];
+
+<span class="comment">%Print the A string and create a new line after done printing</span>
+fprintf(<span class="string">'%s\n'</span>, A);
+<span class="comment">%Display the A1 Matrix</span>
+disp(A1);
+<span class="comment">%Print the A2 string and create a new line after done printing</span>
+fprintf(<span class="string">'%s\n'</span>, A2);
+<span class="comment">%Print the B string and create a new line after done printing</span>
+fprintf(<span class="string">'\n%s\n'</span>, B);
+<span class="comment">%Display B1 Matrix</span>
+disp(B1);
+<span class="comment">%Print the B2 string and create a new line after done printing</span>
+fprintf(<span class="string">'%s\n'</span>, B2);
+
+<span class="comment">% Extra Credit: Implement the convolution function</span>
+<span class="comment">% (using for loops and matrix muiltiplication)</span>
+
+<span class="comment">%Create the same image filter. It is an identity matrix that ensures no</span>
+<span class="comment">%pixels are changed from the original value, so the image stays the same</span>
+sameImageFilter = [0 0 0;
+                   0 1 0;
+                   0 0 0];
+
+<span class="comment">%Create the left image filter. It is used to shift each pixel to the left</span>
+<span class="comment">%by replacing each pixel with the pixel to its right.</span>
+leftImageFilter = [0 0 0;
+                   0 0 1;
+                   0 0 0];
+
+<span class="comment">%Apply the same image filter to the original image</span>
+sameImage = imfilter(myImage, sameImageFilter);
+
+<span class="comment">%Create the original left image before the filter is applied</span>
+leftImage = myImage;
+
+<span class="comment">%Create a loop that applies the left filter 30 times to ensure we are able</span>
+<span class="comment">%to visually see a difference in the pixels. The replicate part of the</span>
+<span class="comment">%filter command ensures that the values of the pixels located outside of</span>
+<span class="comment">%the original image</span>
+<span class="keyword">for</span> i = 1:30
+leftImage = imfilter(leftImage, leftImageFilter, <span class="string">'replicate'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">%Create another figure that displays all the extra convolutions and ensure</span>
+<span class="comment">%to display the original image for comparison</span>
+figure(<span class="string">'Name'</span>,<span class="string">'Extra Credit: Convolution'</span>);
+subplot(2,2,1);
+imshow(myImage);
+title(<span class="string">'Original Image'</span>);
+
+<span class="comment">%Plot the image that had the same image filter applied</span>
+subplot(2,2,3);
+imshow(sameImage);
+title(<span class="string">"Same Image Filter"</span>);
+
+<span class="comment">%Plot the image that had the left image filter applied</span>
+subplot(2,2,4);
+imshow(leftImage);
+title(<span class="string">'Left Image Filter'</span>);
+</pre>
+<pre class="codeoutput">A. The 3x3 filter that could be used to produce the exact same image after convolution would be:
+     0     0     0
+     0     1     0
+     0     0     0
+
+This 3x3 matrix functions in this way because it is known as an identity matrix. The central pixel of one multiplies each pixel by itself and the surrounding zeros ensure there are no other changes applied to the image&rsquo;s pixels.
+
+B. The 3x3 filter that could be used to shift all pixels to the left after convolution would be:
+     0     0     0
+     0     0     1
+     0     0     0
+
+This 3x3 matrix functions in this way because having an offcenter one leads each pixel being replaced by the pixel to its right, which moves all the pixels in the image to the left
+</pre>
+<img vspace="5" hspace="5" src="labFour_01.png" alt=""> <img vspace="5" hspace="5" src="labFour_02.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+% Create two smoothing kernals, the first one should be of 
+% dimensions 3x3, the second: 7x7.
+% filterOne is shown below, you will need to complete
+% step 1b (the 7x7 filter). 
+
+%In order to create a smoothing effect we must ensure 
+%the image keeps its original brightness and quality,
+%by keeping the matrix value at 1 while also lowering
+%the smoothness of each pixel by dividing it. In the
+%3x3 matrix the value to divide by is 9 since the 
+%image is divided into 9 sections.
+% a. 
+smoothingFilterOne = [1/9 1/9 1/9; 
+                      1/9 1/9 1/9; 
+                      1/9 1/9 1/9];
+ 
+%For the second smoothing filter, we keep the same logic
+%except each pixel is divided by 49 since the image is 
+%divided into 49 sections.
+% b.
+smoothingFilterTwo = [1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49; 
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49; 
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49; 
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49; 
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49; 
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49; 
+                      1/49, 1/49, 1/49, 1/49, 1/49, 1/49, 1/49];
+
+% Apply both smoothing filters to the cameraman image.
+% The cameraman image comes with matlab and can be 
+% accessed as shown below:
+% a.
+%Read the image into the application
+myImage = imread('cameraman.tif');
+
+%Create another image with the filter applied.
+%Using the imfilter command easily allows us to do this
+%because it applies whatever filter we supply it to the
+%original image referenced 
+filterOneImage = imfilter(myImage, smoothingFilterOne);
+
+%Using the same logic and command to apply the second 
+%filter to the original image
+filterTwoImage = imfilter(myImage, smoothingFilterTwo);
+
+% Your output should include a single figure containing
+% the original image followed by each of the above
+% filtered images.
+
+%Creating the Output Figure
+%Naming the figure
+figure('Name', 'Filters Assignment');
+
+%Plotting the Original Image, subplot is used to choose where the image
+%is plotted in the figure, imshow is used to display an image, and title is
+%used to create a title above an image, so these will be seen a lot
+%throughout the rest of the code
+subplot(2,2,1);
+imshow(myImage);
+title('Original Image');
+
+%Plotting the First Smoothing Filter Image (3x3)
+subplot(2,2,3);
+imshow(filterOneImage);
+title("3x3 Smoothing Filter");
+
+%Plotting the Second Smoothing Filter Image (7x7)
+subplot(2,2,4);
+imshow(filterTwoImage);
+title('7x7 Smoothing Filter');
+
+% At the end of your script, output the answers to the
+% following questions (use the fprintf command):
+% a. What 3x3 filter could be used to produce the exact
+% same image after convolution?
+% b. What 3x3 filter could be used to shift all pixels
+% to the left?
+
+%Outputting the answer to questions a & b
+A = ['A. The 3x3 filter that could be used to produce the exact same image ' ...
+    'after convolution would be:'];
+A1 = [0 0 0; 
+      0 1 0;
+      0 0 0];
+A2 = ['This 3x3 matrix functions in this way because it is known as an ' ...
+    'identity matrix. The central pixel of one multiplies each pixel by ' ...
+    'itself and the surrounding zeros ensure there are no other changes ' ...
+    'applied to the image’s pixels.'];
+B = ['B. The 3x3 filter that could be used to shift all pixels to the left ' ...
+    'after convolution would be:'];
+B1 = [0 0 0;
+      0 0 1;
+      0 0 0];
+B2 = ['This 3x3 matrix functions in this way because having an offcenter ' ...
+    'one leads each pixel being replaced by the pixel to its right, which' ...
+    ' moves all the pixels in the image to the left'];
+
+%Print the A string and create a new line after done printing
+fprintf('%s\n', A);
+%Display the A1 Matrix
+disp(A1);
+%Print the A2 string and create a new line after done printing
+fprintf('%s\n', A2);
+%Print the B string and create a new line after done printing
+fprintf('\n%s\n', B);
+%Display B1 Matrix
+disp(B1);
+%Print the B2 string and create a new line after done printing
+fprintf('%s\n', B2);
+
+% Extra Credit: Implement the convolution function
+% (using for loops and matrix muiltiplication)
+
+%Create the same image filter. It is an identity matrix that ensures no
+%pixels are changed from the original value, so the image stays the same
+sameImageFilter = [0 0 0;
+                   0 1 0;
+                   0 0 0];
+
+%Create the left image filter. It is used to shift each pixel to the left
+%by replacing each pixel with the pixel to its right.
+leftImageFilter = [0 0 0;
+                   0 0 1;
+                   0 0 0];
+
+%Apply the same image filter to the original image
+sameImage = imfilter(myImage, sameImageFilter);
+
+%Create the original left image before the filter is applied
+leftImage = myImage;
+
+%Create a loop that applies the left filter 30 times to ensure we are able
+%to visually see a difference in the pixels. The replicate part of the
+%filter command ensures that the values of the pixels located outside of
+%the original image
+for i = 1:30
+leftImage = imfilter(leftImage, leftImageFilter, 'replicate');
+end
+
+%Create another figure that displays all the extra convolutions and ensure
+%to display the original image for comparison
+figure('Name','Extra Credit: Convolution');
+subplot(2,2,1);
+imshow(myImage);
+title('Original Image');
+
+%Plot the image that had the same image filter applied
+subplot(2,2,3);
+imshow(sameImage);
+title("Same Image Filter");
+
+%Plot the image that had the left image filter applied
+subplot(2,2,4);
+imshow(leftImage);
+title('Left Image Filter');
+##### SOURCE END #####
+-->
+</body>
+</html>
